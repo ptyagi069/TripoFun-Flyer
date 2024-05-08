@@ -36,6 +36,7 @@
     align-items: center;
     padding: 10px;
     margin-bottom: 10px;
+    clear : both;
 }
 
 .time-days p {
