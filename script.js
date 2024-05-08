@@ -95,21 +95,34 @@ function createContainerHTML(service, index) {
   fetchAddOnsDetails();
 
 
-  
+
   function downloadPoster() {
     const posterDiv = document.querySelector('.a4-wrapper');
 
-    html2canvas(posterDiv).then(canvas => {
+    html2canvas(posterDiv, {
+        allowTaint: true,
+        useCORS: true,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: document.documentElement.offsetWidth,
+        windowHeight: document.documentElement.offsetHeight
+    }).then(canvas => {
+        // Convert canvas to data URL
         const dataUrl = canvas.toDataURL('image/png');
 
+        // Create a download link
         const downloadLink = document.createElement('a');
         downloadLink.href = dataUrl;
-        downloadLink.download = 'poster.png'; 
+        downloadLink.download = 'poster.png';
 
+        // Append link to body and trigger download
         document.body.appendChild(downloadLink);
         downloadLink.click();
 
+        // Clean up: remove the download link from the body
         document.body.removeChild(downloadLink);
+    }).catch(error => {
+        console.error('Error generating poster:', error);
     });
 }
 
