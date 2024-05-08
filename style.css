@@ -5,7 +5,7 @@
 }
 .a4-wrapper {
     width: 210mm;
-    height: 339mm;
+    height: auto;
     margin: 0 auto;
     position: relative;
     overflow: hidden;
