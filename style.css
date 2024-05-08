@@ -1,0 +1,108 @@
+.body{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.a4-wrapper {
+    width: 210mm;
+    height: 339mm;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid black;
+    position: relative;
+}
+
+.package-name{
+    position: relative;
+    bottom: 45mm;
+}
+.dates{
+    position: relative;
+    bottom: 45mm;
+    margin: 15px;
+    border: 1px solid rgb(255, 255, 255);
+    width: 300px;
+    border-radius: 5px;
+    backdrop-filter: blur(10px)
+  
+}
+.activity{
+    padding: 10px;
+    line-height: 0.5;
+}
+.time-days {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.time-days p {
+    border: 2px solid black; /* Bolder border */
+    padding: 5px 10px;
+    margin: 0;
+    border-radius: 5px;
+}
+
+
+.time-days p:first-child {
+    margin-right: 10px; 
+}
+.container {
+    padding-left: 25px; /* Add padding to the left side of the container */
+    padding-right: 25px; /* Add padding to the right side of the container */
+}
+
+
+.footer {
+    display: flex;
+    
+}
+
+.contact-info {
+    display: flex;
+    gap: 20px; 
+    justify-content: space-between;
+}
+
+.contact-info p {
+    margin: 0; /* Reset default margin */
+}
+.footer {
+    border: 2px solid #333;
+    margin-top: 5px;
+    display: flex;
+    margin-top:  15px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3D3D3D;
+    height: 45px;
+}
+.footer-item {
+   color: white;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+}
+.download-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 999; /* Ensure it's above other content */
+}
+
+
+#downloadPosterBtn {
+    background-color: #007bff; /* Button background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Add padding */
+    border-radius: 5px; /* Add rounded corners */
+    font-size: 16px; /* Adjust font size */
+    cursor: pointer; /* Show pointer cursor on hover */
+}
+
+#downloadPosterBtn:hover {
+    background-color: #0056b3; /* Darker background color on hover */
+}
