@@ -56,46 +56,115 @@ function createContainerHTML(service, index) {
     }
   }
   
-  function fetchAddOnsDetails() {
-    const apiUrl = 'https://mobileapi.cultureholidays.com/api/Holidays/GetAddOnsDetails';
-    const requestData = { agentID: 'CHAGT000004000', pkG_ID: '9', year: '2024' };
+  async function fetchAddOnsDetails() {
+    const loaderContainer = document.getElementById('loader');
+    loaderContainer.style.display = 'flex';
   
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Accept': '*/*',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestData)
-    })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
+    const apiUrl = 'https://mobileapi.cultureholidays.com/api/Holidays/GetAddOnsDetails';
+    const requestData = {
+      agentID: 'CHAGT000004000',
+      pkG_ID: '9',
+      year: '2024'
+    };
+  
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Accept': '*/*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      });
+  
+      if (!response.ok) {
         throw new Error('Failed to fetch add-ons details');
       }
-    })
-    .then(data => {
+  
+      const data = await response.json();
       const containerSection = document.querySelector('#dynamic-containers');
       containerSection.innerHTML = '';
   
-      const dataLength = data.length;   
+      const dataLength = data.length;
       for (let i = 0; i < dataLength; i++) {
-        const service = data[i]; 
-  
+        const service = data[i];
         const container = createContainerHTML(service, i);
         containerSection.innerHTML += container;
       }
-    })
-    .catch(error => {
+  
+      loaderContainer.style.display = 'none';
+    } catch (error) {
       console.error('Error fetching add-ons details:', error);
-    });
+      loaderContainer.style.display = 'none';
+    }
   }
   
-  fetchAddOnsDetails();
-
-
-
+  async function fetchAndDisplayQRCode() {
+    const apiUrl = 'https://apidev.cultureholidays.com/api/Account/GenrateQr';
+    const agentId = 'CHAGT000004000';
+    const emailId = 'Ocean.odysseys23@gmail.com';
+    const packageId = '9';
+    const tourDate = '15/06/2024';
+    const amount = '1234';
+    const depositAmount = '123';
+    const ipAddress = '::1';
+    const requestBody = {};
+  
+    const queryString = new URLSearchParams({
+      agentid: agentId,
+      emailid: emailId,
+      packageid: packageId,
+      tourdate: tourDate,
+      Amount: amount,
+      DepositAmount: depositAmount,
+      ipaddress: ipAddress,
+    }).toString();
+  
+    const fullUrl = `${apiUrl}?${queryString}`;
+  
+    try {
+      const response = await fetch(fullUrl, {
+        method: 'POST',
+        headers: {
+          'Accept': '*/*',
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+      if (data.success && data.message.startsWith('data:image/png;base64,')) {
+        const base64ImageData = data.message.replace('data:image/png;base64,', '');
+        const qrImage = new Image();
+        qrImage.src = 'data:image/png;base64,' + base64ImageData;
+        qrImage.style.width = '150px';
+        qrImage.style.borderRadius = '14px'
+        qrImage.style.zIndex = '100'
+  
+        const imageContainer = document.getElementById('qrCodeContainer');
+        imageContainer.appendChild(qrImage);
+      } else {
+        console.error('Invalid API response format');
+      }
+    } catch (error) {
+      console.error('Error fetching API:', error);
+    }
+  }
+  
+  async function initializeApp() {
+    try {
+      await Promise.all([fetchAddOnsDetails(), fetchAndDisplayQRCode()]);
+    } catch (error) {
+      console.error('Error initializing app:', error);
+    }
+  }
+  
+  initializeApp();
+  
+  
   function downloadPoster() {
     const posterDiv = document.querySelector('.a4-wrapper');
 
@@ -128,3 +197,4 @@ function createContainerHTML(service, index) {
 
 const downloadBtn = document.getElementById('downloadPosterBtn');
 downloadBtn.addEventListener('click', downloadPoster);
+
